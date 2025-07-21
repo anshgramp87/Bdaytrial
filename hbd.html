@@ -3,167 +3,225 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Birthday Surprise</title>
+  <title>Happy Birthday Miss Beauty 🎉</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand&display=swap" rel="stylesheet">
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
     }
     body {
-      background: linear-gradient(to top right, #fbd3e9, #bb377d);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to top right, #ffd6e0, #e0f7fa);
       overflow: hidden;
     }
-    .card {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 30px 40px;
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
       text-align: center;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      color: #fff;
-      max-width: 90%;
-      animation: fadeIn 2s ease;
+      position: relative;
+      z-index: 1;
     }
-    .emoji {
-      font-size: 2rem;
-      margin-bottom: 10px;
+    .card {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      padding: 40px;
+      margin: 20px;
+      animation: fadeIn 1s ease-in-out;
+      display: none;
+    }
+    .card.active {
+      display: block;
+    }
+    h1, h2, p {
+      color: #ff4081;
     }
     .btn {
-      background-color: #ff4081;
+      background-color: #ff69b4;
+      color: white;
       border: none;
       padding: 10px 25px;
       border-radius: 30px;
-      font-size: 16px;
-      color: white;
-      cursor: pointer;
+      font-size: 18px;
       margin-top: 20px;
+      cursor: pointer;
       transition: all 0.3s ease;
     }
     .btn:hover {
-      background-color: #e91e63;
+      background-color: #ff1493;
     }
     @keyframes fadeIn {
-      0% {opacity: 0; transform: scale(0.8);}
-      100% {opacity: 1; transform: scale(1);}
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .hidden {
-      display: none;
+    .poem {
+      font-size: 1.2em;
+      color: #6a1b9a;
+      margin-top: 20px;
+      line-height: 1.6;
+      white-space: pre-wrap;
     }
-    .confetti {
+    .gif {
+      margin-top: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    canvas, #hearts, #balloons, #fireworks {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       pointer-events: none;
-      z-index: -1;
-    }
-    .message {
-      font-size: 2em;
-      color: white;
-      text-shadow: 1px 1px 2px black;
+      z-index: 0;
     }
   </style>
 </head>
 <body>
-  <div class="card" id="mainCard">
-    <div class="emoji">🎁</div>
-    <h2>I have something for you...</h2>
-    <button class="btn" onclick="startBirthday()">Open 🎉</button>
+  <canvas id="confetti"></canvas>
+  <canvas id="hearts"></canvas>
+  <canvas id="balloons"></canvas>
+  <canvas id="fireworks"></canvas>
+
+  <div class="container">
+    <div class="card active" id="card1">
+      <h1>I have something for you...</h1>
+      <img class="gif" src="https://media.tenor.com/U6CUp_yW9uAAAAAC/bear-love.gif" width="250" alt="gift gif">
+      <button class="btn" onclick="nextCard(1)">Click to Start 💝</button>
+    </div>
+
+    <div class="card" id="card2">
+      <h2>It's a special day for me...</h2>
+      <img class="gif" src="https://media.tenor.com/Og7U8jY3qRAAAAAi/mochi-mochi-peach-cat.gif" width="220" alt="mochi gif">
+      <button class="btn" onclick="nextCard(2)">Wanna See Why? 👉</button>
+    </div>
+
+    <div class="card" id="card3">
+      <h2>Let's Cut the Cake! 🎂</h2>
+      <img class="gif" src="https://media.tenor.com/BG_MYX6UPkIAAAAC/cute-bear-cake.gif" width="250" alt="cake gif">
+      <button class="btn" onclick="nextCard(3)">Continue ❤️</button>
+    </div>
+
+    <div class="card" id="card4">
+      <h1 style="font-family: 'Pacifico', cursive; font-size: 2.5em;">Happy Birthday, Miss Beauty! 🎉</h1>
+      <p class="poem">
+From morning light to evening star,  
+You're beautiful just as you are.  
+Your smile, your charm, your playful way,  
+Bring sunshine to the dullest day.  
+
+So here’s a wish, so warm and true,  
+For love, for joy, for skies so blue.  
+A cake, a hug, a wish come true—  
+The world’s a brighter place with you. ❤️
+      </p>
+      <button class="btn" onclick="playMusic(); launchFireworks()">Play Music 🎵</button>
+    </div>
   </div>
 
-  <div class="card hidden" id="msgCard">
-    <div class="emoji">🥺</div>
-    <h2>It's a special day for me...</h2>
-    <img src="https://media.tenor.com/rlwsnslJkZAAAAAC/bear-cute.gif" width="180" style="border-radius: 10px;">
-    <button class="btn" onclick="showCake()">Enter My Day ❤️</button>
-  </div>
-
-  <div class="card hidden" id="cakeCard">
-    <h2 style="color: #ff69b4;">Let's Cut the Cake! 🎂</h2>
-    <img src="https://i.imgur.com/Zd2I8MA.png" width="150">
-    <button class="btn" onclick="finalWish()">Celebrate Our Love ❤️</button>
-  </div>
-
-  <div class="card hidden" id="finalCard">
-    <h1 class="message">Happy Birthday, MadamJii 🎆</h1>
-    <canvas class="confetti" id="confettiCanvas"></canvas>
-  </div>
+  <audio id="bgm" preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_276eaa2c18.mp3?filename=birthday-celebration-116027.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
-    function startBirthday() {
-      document.getElementById('mainCard').classList.add('hidden');
-      document.getElementById('msgCard').classList.remove('hidden');
+    // Confetti Particles
+    const confetti = document.getElementById('confetti');
+    const ctx1 = confetti.getContext('2d');
+    let particles = [];
+    confetti.width = window.innerWidth;
+    confetti.height = window.innerHeight;
+    for (let i = 0; i < 150; i++) {
+      particles.push({
+        x: Math.random() * confetti.width,
+        y: Math.random() * confetti.height,
+        r: Math.random() * 4 + 1,
+        d: Math.random() * 50,
+        color: `hsl(${Math.random()*360}, 100%, 70%)`
+      });
+    }
+    function drawConfetti() {
+      ctx1.clearRect(0, 0, confetti.width, confetti.height);
+      particles.forEach(p => {
+        ctx1.beginPath();
+        ctx1.fillStyle = p.color;
+        ctx1.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+        ctx1.fill();
+      });
+      updateConfetti();
+    }
+    function updateConfetti() {
+      particles.forEach(p => {
+        p.y += Math.cos(p.d) + 1;
+        p.x += Math.sin(p.d);
+        if (p.y > confetti.height) {
+          p.x = Math.random() * confetti.width;
+          p.y = -10;
+        }
+      });
+    }
+    function loopConfetti() {
+      drawConfetti();
+      requestAnimationFrame(loopConfetti);
+    }
+    loopConfetti();
+
+    // Card Logic
+    function nextCard(current) {
+      document.getElementById('card' + current).classList.remove('active');
+      document.getElementById('card' + (current + 1)).classList.add('active');
     }
 
-    function showCake() {
-      document.getElementById('msgCard').classList.add('hidden');
-      document.getElementById('cakeCard').classList.remove('hidden');
+    function playMusic() {
+      const audio = document.getElementById('bgm');
+      audio.play().catch(err => console.log('User gesture needed:', err));
     }
 
-    function finalWish() {
-      document.getElementById('cakeCard').classList.add('hidden');
-      document.getElementById('finalCard').classList.remove('hidden');
-      startConfetti();
-    }
-
-    function startConfetti() {
-      const canvas = document.getElementById("confettiCanvas");
-      const ctx = canvas.getContext("2d");
+    // Fireworks Canvas
+    function launchFireworks() {
+      const canvas = document.getElementById('fireworks');
+      const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      const particles = [];
-
-      for (let i = 0; i < 150; i++) {
-        particles.push({
+      let fireworks = [];
+      function Firework() {
+        return {
           x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          r: Math.random() * 4 + 1,
-          d: Math.random() * 50,
-          color: `hsl(${Math.random()*360}, 100%, 50%)`,
-          tilt: Math.random() * 10 - 5,
-          tiltAngle: 0
-        });
+          y: canvas.height,
+          r: 2,
+          color: `hsl(${Math.random()*360}, 100%, 60%)`,
+          vx: (Math.random() - 0.5) * 10,
+          vy: -Math.random() * 10 - 5,
+          alpha: 1
+        }
       }
-
-      function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
+      for (let i = 0; i < 30; i++) fireworks.push(Firework());
+      function animate() {
+        ctx.fillStyle = 'rgba(0,0,0,0.1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        fireworks.forEach(f => {
           ctx.beginPath();
-          ctx.fillStyle = p.color;
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+          ctx.arc(f.x, f.y, f.r, 0, 2 * Math.PI);
+          ctx.fillStyle = f.color;
+          ctx.globalAlpha = f.alpha;
           ctx.fill();
-        }
-        update();
+          f.x += f.vx;
+          f.y += f.vy;
+          f.alpha -= 0.02;
+        });
+        ctx.globalAlpha = 1;
+        fireworks = fireworks.filter(f => f.alpha > 0);
+        if (fireworks.length > 0) requestAnimationFrame(animate);
       }
-
-      function update() {
-        for (let i = 0; i < particles.length; i++) {
-          let p = particles[i];
-          p.y += Math.cos(p.d) + 1;
-          p.x += Math.sin(p.d);
-
-          if (p.y > canvas.height) {
-            p.x = Math.random() * canvas.width;
-            p.y = -10;
-          }
-        }
-      }
-
-      function loop() {
-        draw();
-        requestAnimationFrame(loop);
-      }
-
-      loop();
+      animate();
     }
   </script>
 </body>
-</html>
+    </html>
+        
